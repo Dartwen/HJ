@@ -1,0 +1,69 @@
+'use striñt';
+
+var lowerSounds = ['https://netology-code.github.io/hj-homeworks/event-object/piano/sounds/lower/first.mp3',
+    'https://netology-code.github.io/hj-homeworks/event-object/piano/sounds/lower/second.mp3',
+    'https://netology-code.github.io/hj-homeworks/event-object/piano/sounds/lower/third.mp3',
+    'https://netology-code.github.io/hj-homeworks/event-object/piano/sounds/lower/fourth.mp3',
+    'https://netology-code.github.io/hj-homeworks/event-object/piano/sounds/lower/fifth.mp3'];
+
+var middleSounds = ['https://netology-code.github.io/hj-homeworks/event-object/piano/sounds/middle/first.mp3',
+    'https://netology-code.github.io/hj-homeworks/event-object/piano/sounds/middle/second.mp3',
+    'https://netology-code.github.io/hj-homeworks/event-object/piano/sounds/middle/third.mp3',
+    'https://netology-code.github.io/hj-homeworks/event-object/piano/sounds/middle/fourth.mp3',
+    'https://netology-code.github.io/hj-homeworks/event-object/piano/sounds/middle/fifth.mp3'];
+
+var higherSounds = ['https://netology-code.github.io/hj-homeworks/event-object/piano/sounds/higher/first.mp3',
+    'https://netology-code.github.io/hj-homeworks/event-object/piano/sounds/higher/second.mp3',
+    'https://netology-code.github.io/hj-homeworks/event-object/piano/sounds/higher/third.mp3',
+    'https://netology-code.github.io/hj-homeworks/event-object/piano/sounds/higher/fourth.mp3',
+    'https://netology-code.github.io/hj-homeworks/event-object/piano/sounds/higher/fifth.mp3'];
+
+var piano = document.getElementsByClassName('set');
+var buttonPiano = document.getElementsByTagName('li');
+const buttonSounds = document.getElementsByTagName('audio');
+
+for (let sound of middleSounds) {
+    buttonSounds.src = sound;
+}
+
+function keyDown(event) {
+    switch (event.key) {
+        case 'Shift':
+            piano[0].classList.remove('middle');
+            piano[0].classList.add('lower');
+            for (let sound of lowerSounds) {
+                buttonSounds.src = sound;
+            }
+            break;
+        case 'Alt':
+            piano[0].classList.remove('middle');
+            piano[0].classList.add('higher');
+            for (let sound of higherSounds) {
+                buttonSounds.src = sound;
+            }
+            break;
+    }
+
+}
+
+function keyUp(event) {
+    piano[0].classList.remove('lower', 'higher');
+    piano[0].classList.add('middle');
+    for (let sound of middleSounds) {
+        buttonSounds.src = sound;
+    }
+
+}
+
+document.addEventListener('keydown', keyDown);
+document.addEventListener('keyup', keyUp);
+
+function playBtn() {
+    var thisAudio = this.getElementsByTagName('audio');
+    thisAudio[0].currentTime = 0;
+    thisAudio[0].play();
+}
+
+for (let button of buttonPiano) {
+    button.addEventListener('click', playBtn);
+}
