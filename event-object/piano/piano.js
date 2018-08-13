@@ -43,8 +43,9 @@ function changeSounds() {
 changeSounds();
 
 function soundPlay() {
-    const audio = this.getElementsByTagName('audio');
-    audio[0].play();
+    let audio = this.getElementsByTagName('audio')[0];
+    audio.currentTime = 0;
+    audio.play();
 }
 
 const keys = document.getElementsByTagName('li');
