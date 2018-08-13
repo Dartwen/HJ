@@ -14,23 +14,15 @@ var input = [];
 var code = ['KeyY', 'KeyT', 'KeyN', 'KeyJ', 'KeyK', 'KeyJ', 'KeyU', 'KeyB', 'KeyZ'];
 var secret = document.getElementsByClassName('secret')[0];
 
-function logKeys(ev) {
-    input.push(ev.code);
-    if (input.length > 9) {
-        input.shift();
+
+function showSecret(event) {
+    if(event.code === 'KeyY'){
+        input =[];
     }
-    if (input.length === 9) {
-        showSecret();
+    input.push(event.code);
+    if(input.join() === code.join()) {
+        secret.classList.add('visible');
     }
 }
 
-function showSecret() {
-    for (let i = 0; i <= code.length; i++) {
-        if (code[i] !== input[i]) {
-            return false;
-        }
-    }
-    secret.classList.add('visible');
-}
-
-document.addEventListener('keydown', logKeys);
+document.addEventListener('keydown', showSecret);
