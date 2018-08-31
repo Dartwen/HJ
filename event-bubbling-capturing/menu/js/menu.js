@@ -1,7 +1,8 @@
 'use strict';
 
 function toggleMenu(event) {
-    if (event.target.classList.contains('show')) {
+    event.preventDefault();
+    if (event.currentTarget.classList.contains('show')) {
         event.currentTarget.classList.remove('show');
         event.currentTarget.classList.add('hide');
     } else {
@@ -14,7 +15,8 @@ function toggleMenu(event) {
 function openLink(event) {
     event.preventDefault();
     console.log(event.target.textContent);
-    event.stopPropagation();
+    event.target.closest('.dropdown').classList.add('hide');
+    event.target.closest('.dropdown').classList.remove('show');
 }
 
 function init(node) {
@@ -25,7 +27,7 @@ function initLink(node) {
     if (node.dataset.toggle) {
         return;
     }
-    node.addEventListener('click', openLink, true);
+    node.addEventListener('click', openLink);
 }
 
 Array
