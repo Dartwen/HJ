@@ -1,57 +1,41 @@
 'use strict';
 
-document.addEventListener('DOMContentLoaded', () => {
-    document.querySelector('.slides > .slide').classList.add('slide-current');
-    disable(prev, first);
-});
+const slides = document.querySelector('.slides');
+let slideCurrent = slides.firstElementChild;
+slideCurrent.classList.add('slide-current');
 
-const buttons = Array.from(document.querySelector('.slider-nav').children);
-const next = buttons.find(btn => btn.dataset.action === 'next');
-const prev = buttons.find(btn => btn.dataset.action === 'prev');
-const first = buttons.find(btn => btn.dataset.action === 'first');
-const last = buttons.find(btn => btn.dataset.action === 'last');
+const btnPrev = document.querySelector('[data-action = prev]');
+const btnNext = document.querySelector('[data-action = next]');
+const btnFirst = document.querySelector('[data-action = first]');
+const btnLast = document.querySelector('[data-action = last]');
 
-buttons.forEach(btn => btn.addEventListener('click', moveSlide));
+btnNext.addEventListener('click', () => moveSlide('next'));
+btnPrev.addEventListener('click', () => moveSlide('prev'));
+btnFirst.addEventListener('click', () => moveSlide('first'));
+btnLast.addEventListener('click', () => moveSlide('last'));
 
-function moveSlide(event) {
-    const target = event.currentTarget;
-    const actionType = target.dataset.action;
-    let current = document.querySelector('li.slide-current');
-    let activatedSlide;
-
-    switch (actionType) {
-        case 'prev':
-            activatedSlide = current.previousElementSibling;
-            break;
+function courseSlide(course) {
+    switch(course) {
         case 'next':
-            activatedSlide = current.nextElementSibling;
-            break;
+            return slideCurrent.nextElementSibling;
+        case 'prev':
+            return slideCurrent.previousElementSibling;
         case 'first':
-            activatedSlide = current.parentElement.firstElementChild;
-            break;
+            return slides.firstElementChild;
         case 'last':
-            activatedSlide = current.parentElement.lastElementChild;
-            break;
+            return slides.lastElementChild;
     }
+}
 
-    current.classList.remove('slide-current');
+function moveSlide(course) {
+    const activatedSlide = courseSlide(course);
+    slideCurrent.classList.remove('slide-current');
     activatedSlide.classList.add('slide-current');
 
-    activatedSlide.previousElementSibling ? enable(prev, first) : disable(prev, first);
-    activatedSlide.nextElementSibling ? enable(next, last) : disable(next, last);
-}
+    btnNext.classList.toggle('disabled', activatedSlide.nextElementSibling == null);
+    btnLast.classList.toggle('disabled', activatedSlide.nextElementSibling == null);
+    btnPrev.classList.toggle('disabled', activatedSlide.previousElementSibling == null);
+    btnFirst.classList.toggle('disabled', activatedSlide.previousElementSibling == null);
 
-function disable(...buttons) {
-    buttons.forEach(btn => {
-        btn.removeEventListener('click', moveSlide);
-        btn.classList.add('disabled');
-    });
+    slideCurrent = activatedSlide;
 }
-
-function enable(...buttons) {
-    buttons.forEach(btn => {
-            btn.addEventListener('click', moveSlide);
-            btn.classList.remove('disabled');
-        }
-    )
-};
